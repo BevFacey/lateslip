@@ -10,13 +10,12 @@
             margin: 20px auto;
             padding: 20px;
             text-align: center;
-            background-color: blue;
-            color: yellow;
+            background-color: #0c63aa;
+            color: #fcce21;
         }
         input, button {
             margin: 10px 0;
             padding: 8px;
-            width: 100%;
         }
         #receiptDisplay {
             border: 1px solid #ccc;
@@ -28,20 +27,30 @@
             min-height: 100px;
             background-color: white;
             color: black;
+            font-size: 20px;
+            display: none; /* Initially hidden */
         }
     </style>
 </head>
 <body>
     <h1 id="pageTitle">Bev Facey Late Slip<br><hr></h1>
     <form id="nameForm">
-        <label for="nameInput">Name:</label>
-        <input type="text" id="nameInput" required>
-        <button type="submit">Print Late Slip</button>
+        <!--<label for="nameInput">Name:</label>-->
+        <input type="text" id="nameInput" required placeholder="name" autofocus>
+        <button type="submit" id="submitButton">Print Late Slip</button>
     </form>
 
     <div id="receiptDisplay"></div>
 
     <script>
+        // map the enter key to the submit button
+        document.getElementById('nameInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                document.getElementById('submitButton').click();
+            }
+        });
+
         document.getElementById('nameForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -52,7 +61,7 @@
             const now = new Date();
             const formattedDate = now.toLocaleDateString('en-CA'); // YYYY-MM-DD format
             const formattedTime = now.toLocaleTimeString('en-US', {
-                hour: '2-digit',
+                hour: 'numeric',
                 minute: '2-digit',
                 second: '2-digit'
             });
@@ -60,16 +69,9 @@
             // Create receipt content
             const receiptContent = 
 `== Bev Facey Late Slip ==
-Name: ${name}
 Date: ${formattedDate}
 Time: ${formattedTime}
-=========================
-
-
-== Bev Facey Late Slip ==
 Name: ${name}
-Date: ${formattedDate}
-Time: ${formattedTime}
 =========================`;
 
             // Hide the title and form before printing
@@ -79,6 +81,7 @@ Time: ${formattedTime}
             // Display receipt
             const receiptDiv = document.getElementById('receiptDisplay');
             receiptDiv.textContent = receiptContent;
+            receiptDiv.style.display = 'block';
 
             // Attempt to print
             try {
@@ -88,10 +91,10 @@ Time: ${formattedTime}
                 alert('Printing is not supported in this browser or no printer is connected.');
             }
 
-            // Refresh the page after 1 second
+            // Refresh the page after half a second
             setTimeout(() => {
                 location.reload();
-            }, 1000);
+            }, 500);
         });
     </script>
 </body>
