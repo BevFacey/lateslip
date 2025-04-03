@@ -99,9 +99,9 @@ Name: ${name}
                 receiptDiv.style.display = 'none'; // Hide the receipt display
                 document.body.style.margin = '20px auto'; // Reset margin for the body
                 
+                document.getElementById('nameInput').value = ''; // Clear the input field
+                //document.getElementById('nameInput').select(); // Select the input text
                 document.getElementById('nameInput').focus(); // Refocus on the input field
-                document.getElementById('nameInput').select(); // Select the input text
-                //document.getElementById('nameInput').value = ''; // Clear the input field
             });
             
             //setTimeout(() => { location.reload(); }, 6000); // Refresh the page after 5 seconds
