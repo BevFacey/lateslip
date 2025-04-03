@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Late Slip Printer App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            text-align: center;
+            background-color: blue;
+            color: yellow;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+        }
+        #receiptDisplay {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: left;
+            white-space: pre-wrap;
+            font-family: monospace;
+            min-height: 100px;
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="pageTitle">Bev Facey Late Slip<br><hr></h1>
+    <form id="nameForm">
+        <label for="nameInput">Name:</label>
+        <input type="text" id="nameInput" required>
+        <button type="submit">Print Late Slip</button>
+    </form>
+
+    <div id="receiptDisplay"></div>
+
+    <script>
+        document.getElementById('nameForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get the name from the input
+            const name = document.getElementById('nameInput').value;
+            
+            // Get current date and time
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('en-CA'); // YYYY-MM-DD format
+            const formattedTime = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            // Create receipt content
+            const receiptContent = 
+`== Bev Facey Late Slip ==
+Name: ${name}
+Date: ${formattedDate}
+Time: ${formattedTime}
+=========================
+
+
+== Bev Facey Late Slip ==
+Name: ${name}
+Date: ${formattedDate}
+Time: ${formattedTime}
+=========================`;
+
+            // Hide the title and form before printing
+            document.getElementById('pageTitle').style.display = 'none';
+            document.getElementById('nameForm').style.display = 'none';
+
+            // Display receipt
+            const receiptDiv = document.getElementById('receiptDisplay');
+            receiptDiv.textContent = receiptContent;
+
+            // Attempt to print
+            try {
+                window.print();
+            } catch (error) {
+                console.error('Printing failed:', error);
+                alert('Printing is not supported in this browser or no printer is connected.');
+            }
+
+            // Refresh the page after 1 second
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
