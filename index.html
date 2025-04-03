@@ -82,6 +82,7 @@ Name: ${name}
             const receiptDiv = document.getElementById('receiptDisplay');
             receiptDiv.textContent = receiptContent;
             receiptDiv.style.display = 'block';
+            document.body.style.margin = '0'; // Remove margin for printing
 
             // Attempt to print
             try {
@@ -90,11 +91,20 @@ Name: ${name}
                 console.error('Printing failed:', error);
                 alert('Printing is not supported in this browser or no printer is connected.');
             }
-
-            // Refresh the page after half a second
-            setTimeout(() => {
-                location.reload();
-            }, 500);
+            
+            receiptDiv.addEventListener('click', function() { // when the receiptDisplay div is clicked
+                // Show the title and form again
+                document.getElementById('pageTitle').style.display = 'block';
+                document.getElementById('nameForm').style.display = 'block';
+                receiptDiv.style.display = 'none'; // Hide the receipt display
+                document.body.style.margin = '20px auto'; // Reset margin for the body
+                
+                document.getElementById('nameInput').focus(); // Refocus on the input field
+                document.getElementById('nameInput').select(); // Select the input text
+                //document.getElementById('nameInput').value = ''; // Clear the input field
+            });
+            
+            //setTimeout(() => { location.reload(); }, 6000); // Refresh the page after 5 seconds
         });
     </script>
 </body>
